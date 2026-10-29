@@ -1,9 +1,27 @@
 import type { HealthStatus, AdminDocInfo, SourceCitation } from "../types";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+export function getApiBase(): string {
+  const custom = typeof window !== "undefined" ? localStorage.getItem("pavan_api_url") : null;
+  if (custom && custom.trim()) {
+    return custom.trim().replace(/\/+$/, "");
+  }
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL.replace(/\/+$/, "");
+  }
+  if (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
+    return "http://localhost:8000/api";
+  }
+  return "/api";
+}
+
+export function setApiBase(url: string): void {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("pavan_api_url", url.trim());
+  }
+}
 
 export async function fetchHealth(): Promise<HealthStatus> {
-  const res = await fetch(`${API_BASE}/health`);
+  const res = await fetch(`${getApiBase()}/health`);
   if (!res.ok) {
     throw new Error(`Health check failed with status ${res.status}`);
   }
@@ -21,7 +39,7 @@ export async function sendChatMessage(
   model: string;
   retrieved_chunk_count: number;
 }> {
-  const res = await fetch(`${API_BASE}/chat`, {
+  const res = await fetch(`${getApiBase()}/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ question, history, top_k: topK })
@@ -45,7 +63,7 @@ export async function adminListDocs(adminKey: string): Promise<{
   documents: AdminDocInfo[];
   total_vectors: number;
 }> {
-  const res = await fetch(`${API_BASE}/admin/documents`, {
+  const res = await fetch(`${getApiBase()}/admin/documents`, {
     headers: { "X-Admin-Key": adminKey }
   });
 
@@ -67,7 +85,7 @@ export async function adminUploadDocs(
   files.forEach(f => formData.append("files", f));
   formData.append("replace_existing", String(replaceExisting));
 
-  const res = await fetch(`${API_BASE}/admin/documents/upload`, {
+  const res = await fetch(`${getApiBase()}/admin/documents/upload`, {
     method: "POST",
     headers: { "X-Admin-Key": adminKey },
     body: formData
@@ -80,7 +98,7 @@ export async function adminUploadDocs(
 }
 
 export async function adminDeleteDoc(docId: string, adminKey: string): Promise<any> {
-  const res = await fetch(`${API_BASE}/admin/documents/${docId}`, {
+  const res = await fetch(`${getApiBase()}/admin/documents/${docId}`, {
     method: "DELETE",
     headers: { "X-Admin-Key": adminKey }
   });
@@ -92,7 +110,7 @@ export async function adminDeleteDoc(docId: string, adminKey: string): Promise<a
 }
 
 export async function adminReindexDoc(docId: string, adminKey: string): Promise<any> {
-  const res = await fetch(`${API_BASE}/admin/documents/${docId}/reindex`, {
+  const res = await fetch(`${getApiBase()}/admin/documents/${docId}/reindex`, {
     method: "POST",
     headers: { "X-Admin-Key": adminKey }
   });
@@ -108,7 +126,7 @@ export async function adminRetrievalTest(
   adminKey: string,
   topK: number = 4
 ): Promise<any> {
-  const res = await fetch(`${API_BASE}/admin/retrieval-test`, {
+  const res = await fetch(`${getApiBase()}/admin/retrieval-test`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

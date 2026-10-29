@@ -9,7 +9,8 @@ import {
   FileCheck,
   AlertCircle,
   Search,
-  CheckCircle2
+  CheckCircle2,
+  Globe
 } from "lucide-react";
 import type { AdminDocInfo } from "../types";
 import {
@@ -17,7 +18,9 @@ import {
   adminUploadDocs,
   adminDeleteDoc,
   adminReindexDoc,
-  adminRetrievalTest
+  adminRetrievalTest,
+  getApiBase,
+  setApiBase
 } from "../services/api";
 
 interface AdminModalProps {
@@ -34,6 +37,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [adminKey, setAdminKey] = useState(
     localStorage.getItem("pavan_admin_key") || "pavan-admin-secret-key-2026"
   );
+  const [backendUrl, setBackendUrlState] = useState(getApiBase());
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [documents, setDocuments] = useState<AdminDocInfo[]>([]);
   const [totalVectors, setTotalVectors] = useState(0);
@@ -217,6 +221,58 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
         {/* Modal Body */}
         <div style={{ padding: "20px 24px", overflowY: "auto", flex: 1, display: "flex", flexDirection: "column", gap: "20px" }}>
+          {/* Backend API Endpoint Config */}
+          <div style={{
+            background: "rgba(4, 6, 12, 0.6)",
+            border: "1px solid var(--border-subtle)",
+            borderRadius: "12px",
+            padding: "14px 18px",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px"
+          }}>
+            <Globe size={18} color="#00A3FF" />
+            <div style={{ flex: 1 }}>
+              <label style={{ fontSize: "0.72rem", color: "var(--text-muted)", display: "block" }}>
+                Backend API Endpoint (Local or Cloud Server URL)
+              </label>
+              <input
+                type="text"
+                value={backendUrl}
+                onChange={(e) => setBackendUrlState(e.target.value)}
+                placeholder="http://localhost:8000/api or https://your-server/api"
+                style={{
+                  width: "100%",
+                  background: "transparent",
+                  border: "none",
+                  color: "#FFF",
+                  fontSize: "0.88rem",
+                  outline: "none"
+                }}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setApiBase(backendUrl);
+                setStatusMessage({ type: "success", text: `Target API set to ${backendUrl}` });
+                loadDocuments();
+              }}
+              style={{
+                background: "rgba(0, 163, 255, 0.15)",
+                border: "1px solid #00A3FF",
+                color: "#00A3FF",
+                padding: "8px 14px",
+                borderRadius: "8px",
+                fontSize: "0.8rem",
+                fontWeight: 600,
+                cursor: "pointer"
+              }}
+            >
+              Save URL
+            </button>
+          </div>
+
           {/* Admin Auth Form */}
           <form onSubmit={handleKeySave} style={{
             background: "rgba(4, 6, 12, 0.6)",
