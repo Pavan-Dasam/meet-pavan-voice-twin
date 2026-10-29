@@ -1,7 +1,9 @@
 # Meet Pavan — AI Voice Twin 🎙️🤖
 
+🌐 **Live Web Application (GitHub Pages):** [https://pavan-dasam.github.io/meet-pavan-voice-twin/](https://pavan-dasam.github.io/meet-pavan-voice-twin/)  
+📦 **GitHub Repository:** [https://github.com/Pavan-Dasam/meet-pavan-voice-twin](https://github.com/Pavan-Dasam/meet-pavan-voice-twin)
 
-[![CI/CD Pipeline](https://github.com/Pavan-Dasam/meet-pavan-voice-twin/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Pavan-Dasam/meet-pavan-voice-twin/actions)
+[![GitHub Pages](https://img.shields.io/badge/Deployment-GitHub_Pages-22C55E?logo=github&logoColor=white)](https://pavan-dasam.github.io/meet-pavan-voice-twin/)
 [![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![React 18](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev/)
