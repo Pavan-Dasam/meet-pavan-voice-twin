@@ -1,0 +1,43 @@
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Persistent Vector DB & Private Documents
+/data/
+/backend/data/chroma_db/
+/backend/data/uploads/*
+!/backend/data/uploads/.gitkeep
+!/backend/data/initial_knowledge/
+!/backend/data/initial_knowledge/**
+
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE / System
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

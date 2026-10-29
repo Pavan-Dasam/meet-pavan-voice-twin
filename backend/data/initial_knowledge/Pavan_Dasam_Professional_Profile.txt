@@ -1,0 +1,30 @@
+PAVAN DASAM — CANDIDATE PROFILE & ASSESSMENT PERSPECTIVES
+
+Candidate: Pavan Dasam
+Role: AI Engineer / Agentic AI Systems Architect
+Specialization: Generative AI, Multi-Agent Workflows (LangGraph), Production RAG Architectures, FastAPI, Python & Java Microservices
+Location: India | Email: pavanwork2113@gmail.com | Phone: +91 9640559197
+Certifications: Certified in Model Context Protocol (MCP) by Anthropic, Databricks Certified Generative AI Engineer, LangChain Certified, LangGraph Certified.
+
+Assessment Question 1 — Life Story:
+What should we know about your life story in a few sentences?
+I graduated with a B.Tech in Computer Science from JNTUK University in 2023. I began my career as a software engineer at TAO Digitals developing high-throughput Java and Spring Boot microservices and SQL data pipelines for Anthem in health insurance, ensuring 99.99% service availability. Fascinated by the transformative potential of Large Language Models, I transitioned into GenAI engineering, architecting MemberAssist AI—a real-time RAG-powered copilot resolving complex procedure coverage and claim denial inquiries. Currently, I serve as an Agentic AI Engineer at Accenture supporting Voya Financial, where I architect enterprise multi-agent LangGraph workflows like the Autonomous Claims Processing Agent and single-agent MCP tool systems for policy servicing.
+
+Assessment Question 2 — #1 Superpower:
+What's your #1 superpower?
+My #1 superpower is architecting reliable, production-grade agentic AI systems grounded by robust enterprise software engineering foundations. While many developers can assemble a basic LLM prototype, my strength is bridging the gap between non-deterministic models and mission-critical enterprise workflows: designing cyclic state graphs in LangGraph, implementing persistent memory, enforcing human-in-the-loop checkpoints, building strict RAG retrieval guardrails with RAGAS evaluation, and backing everything with rock-solid, high-throughput FastAPI and Java/Spring Boot microservices.
+
+Assessment Question 3 — Top 3 Growth Areas:
+What are the top 3 areas you'd like to grow in?
+The top three areas I am actively growing in are:
+1. Low-latency inference optimization and model serving: Deepening hands-on mastery of speculative decoding, vLLM, and TensorRT-LLM to deliver sub-second P95 latencies for real-time conversational voice agents.
+2. Advanced multi-agent memory and GraphRAG: Expanding beyond traditional vector retrieval into graph-based knowledge representations (GraphRAG) and persistent hierarchical memory across distributed agent swarms.
+3. Automated LLM red-teaming and continuous evaluation: Scaling synthetic evaluation frameworks, automated vulnerability detection, and LLM-as-a-judge pipelines to proactively identify regressions in production.
+
+Assessment Question 4 — Coworker Misconceptions:
+What misconception do your coworkers have about you?
+Because of my strong focus on architectural rigor, edge case handling, and strict guardrails (such as mandatory Human-in-the-Loop review, MCP standardization, and citation grounding), coworkers who haven't worked with me closely sometimes assume I might be overly cautious or prefer building complex systems. In reality, I am deeply pragmatic and believe in "simplicity as a prerequisite for reliability." I always advocate for the simplest architecture that solves the business problem, using battle-tested patterns first and only adding agentic complexity where the workflow genuinely demands iterative state or multi-step reasoning.
+
+Assessment Question 5 — Pushing Boundaries & Limits:
+How do you push your boundaries and limits?
+I push my boundaries by immersing myself directly into high-stakes, technically demanding domains where precision is paramount, such as regulated financial insurance and healthcare claims. Rather than staying in comfort zones, I continuously challenge myself by solving 500+ algorithmic problems across LeetCode and competitive programming platforms, mastering emerging technologies early (such as earning official LangChain, LangGraph, and Anthropic MCP certifications within days of release), and building end-to-end working systems from scratch to battle-test bleeding-edge AI papers in production conditions.
