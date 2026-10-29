@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: meet-pavan-voice-twin
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: standard
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ANTHROPIC_MODEL
+        value: claude-haiku-5-5
+      - key: ADMIN_API_KEY
+        value: pavan-admin-secret-key-2026
+      - key: CHUNK_SIZE
+        value: "800"
+      - key: CHUNK_OVERLAP
+        value: "150"
+      - key: EMBEDDING_MODEL_NAME
+        value: all-MiniLM-L6-v2
+      - key: TOP_K
+        value: "5"
+      - key: MIN_SIMILARITY_SCORE
+        value: "0.15"
+      - key: MAX_COSINE_DISTANCE
+        value: "0.85"
+    disk:
+      name: pavan-rag-data
+      mountPath: /app/backend/data
+      sizeGB: 1
