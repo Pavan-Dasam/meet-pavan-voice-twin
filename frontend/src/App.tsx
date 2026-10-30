@@ -45,6 +45,13 @@ export const App: React.FC = () => {
     stopListening
   } = useSpeechRecognition(handleFinalSpeechTranscript);
 
+  // Barge-in: if user starts speaking via mic, immediately silence any current playback
+  useEffect(() => {
+    if (isListening && isSpeaking) {
+      stop();
+    }
+  }, [isListening, isSpeaking, stop]);
+
   // Load Health on Mount
   useEffect(() => {
     fetchHealth()

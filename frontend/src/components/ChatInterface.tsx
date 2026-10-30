@@ -102,19 +102,27 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               </div>
             )}
 
-            <div style={{
-              maxWidth: "76%",
-              borderRadius: "14px",
-              padding: "14px 18px",
-              background: isUser
-                ? "linear-gradient(135deg, rgba(0, 163, 255, 0.25), rgba(2, 132, 199, 0.35))"
-                : "rgba(10, 14, 26, 0.88)",
-              border: `1px solid ${
-                isUser ? "rgba(0, 163, 255, 0.45)" : isCurrentSpeech ? "#00A3FF" : "var(--border-subtle)"
-              }`,
-              boxShadow: isCurrentSpeech ? "0 0 20px rgba(0, 163, 255, 0.3)" : "none",
-              transition: "all 0.2s"
-            }}>
+          <div style={{
+            maxWidth: "76%",
+            borderRadius: "16px",
+            padding: "16px 20px",
+            background: isUser
+              ? "linear-gradient(135deg, rgba(0, 163, 255, 0.35), rgba(168, 85, 247, 0.25))"
+              : "rgba(15, 23, 42, 0.65)",
+            backdropFilter: "blur(16px) saturate(160%)",
+            WebkitBackdropFilter: "blur(16px) saturate(160%)",
+            border: `1px solid ${
+              isUser
+                ? "rgba(0, 163, 255, 0.45)"
+                : isCurrentSpeech
+                ? "rgba(0, 163, 255, 0.85)"
+                : "rgba(255, 255, 255, 0.12)"
+            }`,
+            boxShadow: isCurrentSpeech
+              ? "0 0 25px rgba(0, 163, 255, 0.4), 0 8px 32px rgba(0, 0, 0, 0.4)"
+              : "0 8px 32px 0 rgba(0, 0, 0, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1)",
+            transition: "all 0.25s ease"
+          }}>
               <div style={{
                 display: "flex",
                 alignItems: "center",

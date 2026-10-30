@@ -41,29 +41,30 @@ export const InputBar: React.FC<InputBarProps> = ({
   };
 
   return (
-    <div style={{
+    <div className="glass-panel" style={{
       padding: "16px 24px",
-      background: "rgba(4, 6, 12, 0.95)",
-      borderTop: "1px solid var(--border-subtle)",
+      borderTop: "1px solid var(--border-glass)",
       position: "relative"
     }}>
       {/* Live Speech Recognition Transcript Overlay */}
       {isListening && transcript && (
         <div style={{
           position: "absolute",
-          top: "-42px",
+          top: "-46px",
           left: "24px",
           right: "24px",
-          background: "rgba(255, 46, 147, 0.15)",
-          border: "1px solid rgba(255, 46, 147, 0.4)",
-          borderRadius: "8px",
-          padding: "8px 14px",
+          background: "rgba(255, 46, 147, 0.2)",
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
+          border: "1px solid rgba(255, 46, 147, 0.5)",
+          borderRadius: "10px",
+          padding: "8px 16px",
           fontSize: "0.82rem",
           color: "#FFF",
           display: "flex",
           alignItems: "center",
           gap: "8px",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)"
+          boxShadow: "0 8px 24px rgba(255, 46, 147, 0.25)"
         }}>
           <span style={{
             width: "8px",
@@ -114,18 +115,21 @@ export const InputBar: React.FC<InputBarProps> = ({
           style={{
             width: "48px",
             height: "48px",
-            borderRadius: "12px",
+            borderRadius: "14px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             cursor: !isSpeechSupported || isLoading ? "not-allowed" : "pointer",
             background: isListening
               ? "linear-gradient(135deg, #FF2E93, #E11D48)"
-              : "rgba(0, 163, 255, 0.12)",
-            border: `1px solid ${isListening ? "#FF2E93" : "rgba(0, 163, 255, 0.35)"}`,
-            color: isListening ? "#FFF" : "#00A3FF",
-            transition: "all 0.2s ease",
-            boxShadow: isListening ? "0 0 20px rgba(255, 46, 147, 0.5)" : "none",
+              : "rgba(0, 163, 255, 0.16)",
+            backdropFilter: "blur(12px)",
+            border: `1px solid ${isListening ? "#FF2E93" : "rgba(0, 163, 255, 0.4)"}`,
+            color: isListening ? "#FFF" : "#38BDF8",
+            transition: "all 0.25s ease",
+            boxShadow: isListening
+              ? "0 0 25px rgba(255, 46, 147, 0.6)"
+              : "0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15)",
             flexShrink: 0
           }}
         >
@@ -140,23 +144,32 @@ export const InputBar: React.FC<InputBarProps> = ({
             onChange={(e) => setInputText(e.target.value)}
             placeholder={
               isSpeechSupported
-                ? "Click microphone to speak, or type your recruiter question here..."
-                : "Speech recognition unavailable — type your question here..."
+                ? "Ask anything about my resume, projects, tech stack, or click a topic above..."
+                : "Ask anything about my resume, projects, or experience..."
             }
             disabled={isLoading}
             style={{
               width: "100%",
               padding: "13px 18px",
-              background: "rgba(10, 14, 26, 0.8)",
-              border: "1px solid var(--border-subtle)",
-              borderRadius: "12px",
+              background: "rgba(15, 23, 42, 0.55)",
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
+              border: "1px solid var(--border-glass)",
+              borderRadius: "14px",
               color: "#F8FAFC",
               fontSize: "0.92rem",
               outline: "none",
-              transition: "border-color 0.2s"
+              boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.3)",
+              transition: "all 0.25s ease"
             }}
-            onFocus={(e) => (e.target.style.borderColor = "#00A3FF")}
-            onBlur={(e) => (e.target.style.borderColor = "var(--border-subtle)")}
+            onFocus={(e) => {
+              e.target.style.borderColor = "#00A3FF";
+              e.target.style.boxShadow = "0 0 16px rgba(0, 163, 255, 0.35), inset 0 2px 4px rgba(0, 0, 0, 0.3)";
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = "var(--border-glass)";
+              e.target.style.boxShadow = "inset 0 2px 4px rgba(0, 0, 0, 0.3)";
+            }}
           />
         </div>
 
@@ -167,18 +180,18 @@ export const InputBar: React.FC<InputBarProps> = ({
           style={{
             width: "48px",
             height: "48px",
-            borderRadius: "12px",
+            borderRadius: "14px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             background: !inputText.trim() || isLoading
-              ? "rgba(148, 163, 184, 0.1)"
+              ? "rgba(255, 255, 255, 0.05)"
               : "linear-gradient(135deg, #00A3FF, #0284C7)",
-            border: "none",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
             color: !inputText.trim() || isLoading ? "#64748B" : "#FFF",
             cursor: !inputText.trim() || isLoading ? "not-allowed" : "pointer",
-            transition: "all 0.2s ease",
-            boxShadow: !inputText.trim() || isLoading ? "none" : "0 0 15px rgba(0, 163, 255, 0.4)",
+            transition: "all 0.25s ease",
+            boxShadow: !inputText.trim() || isLoading ? "none" : "0 0 20px rgba(0, 163, 255, 0.5)",
             flexShrink: 0
           }}
         >

@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
-  --bg-deep: #04060a;
-  --bg-card: rgba(10, 14, 26, 0.85);
-  --bg-card-hover: rgba(16, 24, 44, 0.95);
-  --border-subtle: rgba(148, 163, 184, 0.14);
+  --bg-deep: #030712;
+  --bg-glass-card: rgba(15, 23, 42, 0.65);
+  --bg-glass-panel: rgba(15, 23, 42, 0.55);
+  --bg-glass-input: rgba(30, 41, 59, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-glass-glow: rgba(0, 163, 255, 0.4);
   --cerulean: #00A3FF;
   --cerulean-glow: rgba(0, 163, 255, 0.45);
   --rose: #FF2E93;
@@ -28,8 +30,42 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(0, 163, 255, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(255, 46, 147, 0.07) 0%, transparent 40%);
+    radial-gradient(circle at 10% 20%, rgba(0, 163, 255, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 90% 15%, rgba(168, 85, 247, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(255, 46, 147, 0.12) 0%, transparent 50%),
+    linear-gradient(180deg, #030712 0%, #060d1f 100%);
+  background-attachment: fixed;
+}
+
+/* Glassmorphism Utility Classes */
+.glass-panel {
+  background: var(--bg-glass-panel);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card {
+  background: var(--bg-glass-card);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.glass-pill:hover {
+  background: rgba(0, 163, 255, 0.14);
+  border-color: rgba(0, 163, 255, 0.5);
+  box-shadow: 0 0 16px rgba(0, 163, 255, 0.35);
 }
 
 /* Animations */

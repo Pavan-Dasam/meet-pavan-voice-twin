@@ -37,6 +37,56 @@ class ClaudeRAGService:
     def is_configured(self) -> bool:
         return bool(self.api_key and self.client)
 
+    def rewrite_query_for_retrieval(
+        self,
+        question: str,
+        conversation_history: Optional[List[Dict[str, str]]] = None
+    ) -> str:
+        """
+        Rewrites conversational follow-up questions (e.g. 'What technologies did you use for it?')
+        into a self-contained search query referencing specific entities from previous dialogue turns.
+        """
+        if not conversation_history or len(conversation_history) == 0:
+            return question.strip()
+
+        if not self.is_configured():
+            return question.strip()
+
+        # Build short dialogue context (last 4 turns)
+        history_summary = []
+        for turn in conversation_history[-4:]:
+            r = "Recruiter" if turn.get("role") == "user" else "Pavan"
+            c = turn.get("content", "").strip()
+            if c:
+                history_summary.append(f"{r}: {c[:180]}")
+
+        if not history_summary:
+            return question.strip()
+
+        prompt = (
+            "Given the following conversation history and follow-up question, rewrite the follow-up question "
+            "into a single, standalone search query that preserves all relevant named entities, technologies, "
+            "or projects mentioned earlier. Do NOT answer the question. Return ONLY the rewritten query text.\n\n"
+            "Conversation History:\n" + "\n".join(history_summary) + "\n\n"
+            f"Follow-up Question: {question.strip()}\n\n"
+            "Standalone Search Query:"
+        )
+
+        try:
+            resp = self.client.messages.create(
+                model=self.model,
+                max_tokens=60,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            text_blocks = [b.text for b in resp.content if hasattr(b, "text") and b.text]
+            rewritten = " ".join(text_blocks).strip().strip('"').strip("'")
+            if rewritten and len(rewritten) > 3:
+                return rewritten
+        except Exception:
+            pass
+
+        return question.strip()
+
     def generate_answer(
         self,
         question: str,

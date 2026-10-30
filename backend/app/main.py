@@ -145,13 +145,30 @@ def public_chat(request: Request, payload: ChatRequest):
             detail="Knowledge base is currently empty. Please wait for initial documents to be indexed or contact the admin."
         )
 
-    # Step 1 & 2: Similarity search in ChromaDB
+    # Step 1: Rewrite query for retrieval if conversation history is present
+    search_query = payload.question
+    if payload.history and len(payload.history) > 0:
+        search_query = claude_rag_service.rewrite_query_for_retrieval(
+            question=payload.question,
+            conversation_history=payload.history
+        )
+
+    # Step 2: Similarity search in ChromaDB using the contextualized query
     retrieved_chunks = vs.similarity_search(
-        query=payload.question,
+        query=search_query,
         top_k=payload.top_k or settings.TOP_K,
         max_distance=settings.MAX_COSINE_DISTANCE,
         min_similarity=settings.MIN_SIMILARITY_SCORE
     )
+
+    # If contextual query returned empty, fallback to raw user query
+    if not retrieved_chunks and search_query != payload.question:
+        retrieved_chunks = vs.similarity_search(
+            query=payload.question,
+            top_k=payload.top_k or settings.TOP_K,
+            max_distance=settings.MAX_COSINE_DISTANCE,
+            min_similarity=settings.MIN_SIMILARITY_SCORE
+        )
 
     # Step 3: Call Claude with strict grounding and first-person persona
     try:

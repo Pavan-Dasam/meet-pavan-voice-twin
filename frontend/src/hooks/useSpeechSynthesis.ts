@@ -4,7 +4,9 @@ export function useSpeechSynthesis() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const queueRef = useRef<string[]>([]);
+  const isPlayingQueueRef = useRef(false);
+  const activeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   const isSupported = typeof window !== "undefined" && "speechSynthesis" in window;
 
@@ -24,6 +26,8 @@ export function useSpeechSynthesis() {
 
   const stop = useCallback(() => {
     if (!isSupported) return;
+    queueRef.current = [];
+    isPlayingQueueRef.current = false;
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
     setIsPaused(false);
@@ -45,6 +49,50 @@ export function useSpeechSynthesis() {
     }
   }, [isSupported]);
 
+  const playNextSentence = useCallback((onEnd?: () => void) => {
+    if (!isSupported) return;
+
+    if (queueRef.current.length === 0) {
+      isPlayingQueueRef.current = false;
+      setIsSpeaking(false);
+      setIsPaused(false);
+      if (onEnd) onEnd();
+      return;
+    }
+
+    const sentence = queueRef.current.shift()!;
+    const utterance = new SpeechSynthesisUtterance(sentence);
+    activeUtteranceRef.current = utterance;
+
+    const preferredVoice = voices.find(v =>
+      (v.lang.startsWith("en") && (v.name.includes("Google") || v.name.includes("Natural") || v.name.includes("Samantha") || v.name.includes("Daniel") || v.name.includes("Jenny")))
+    ) || voices.find(v => v.lang.startsWith("en"));
+
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
+
+    utterance.rate = 1.05;
+    utterance.pitch = 1.0;
+
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      setIsPaused(false);
+    };
+
+    utterance.onend = () => {
+      // Stream directly into next sentence in queue
+      playNextSentence(onEnd);
+    };
+
+    utterance.onerror = (e) => {
+      console.warn("Speech synthesis chunk error:", e);
+      playNextSentence(onEnd);
+    };
+
+    window.speechSynthesis.speak(utterance);
+  }, [isSupported, voices]);
+
   const speak = useCallback((text: string, onEnd?: () => void) => {
     if (!isSupported || !text) return;
 
@@ -58,42 +106,22 @@ export function useSpeechSynthesis() {
       .replace(/[-*•]\s+/g, "")
       .trim();
 
-    window.speechSynthesis.cancel();
+    // Cancel any ongoing audio (Barge-in / interruption)
+    stop();
 
-    const utterance = new SpeechSynthesisUtterance(cleanSpokenText);
-    utteranceRef.current = utterance;
+    // Split text into conversational sentences for instant playback
+    const sentences = cleanSpokenText
+      .split(/(?<=[.?!])\s+/)
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
 
-    // Pick natural English voice if available
-    const preferredVoice = voices.find(v =>
-      (v.lang.startsWith("en") && (v.name.includes("Google") || v.name.includes("Natural") || v.name.includes("Samantha") || v.name.includes("Daniel")))
-    ) || voices.find(v => v.lang.startsWith("en"));
+    if (sentences.length === 0) return;
 
-    if (preferredVoice) {
-      utterance.voice = preferredVoice;
-    }
-
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-
-    utterance.onstart = () => {
-      setIsSpeaking(true);
-      setIsPaused(false);
-    };
-
-    utterance.onend = () => {
-      setIsSpeaking(false);
-      setIsPaused(false);
-      if (onEnd) onEnd();
-    };
-
-    utterance.onerror = (e) => {
-      console.warn("Speech synthesis error:", e);
-      setIsSpeaking(false);
-      setIsPaused(false);
-    };
-
-    window.speechSynthesis.speak(utterance);
-  }, [isSupported, voices]);
+    queueRef.current = sentences;
+    isPlayingQueueRef.current = true;
+    setIsSpeaking(true);
+    playNextSentence(onEnd);
+  }, [isSupported, stop, playNextSentence]);
 
   return {
     isSupported,

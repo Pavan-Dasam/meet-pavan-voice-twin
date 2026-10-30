@@ -16,14 +16,12 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleMute
 }) => {
   return (
-    <header style={{
+    <header className="glass-panel" style={{
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      padding: "16px 24px",
-      borderBottom: "1px solid var(--border-subtle)",
-      background: "rgba(4, 6, 12, 0.92)",
-      backdropFilter: "blur(12px)",
+      padding: "16px 28px",
+      borderBottom: "1px solid var(--border-glass)",
       position: "sticky",
       top: 0,
       zIndex: 40
@@ -32,12 +30,12 @@ export const Header: React.FC<HeaderProps> = ({
         <div style={{
           width: "44px",
           height: "44px",
-          borderRadius: "12px",
-          background: "linear-gradient(135deg, #00A3FF, #FF2E93)",
+          borderRadius: "14px",
+          background: "linear-gradient(135deg, rgba(0, 163, 255, 0.9), rgba(255, 46, 147, 0.85))",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 0 16px rgba(0, 163, 255, 0.4)"
+          boxShadow: "0 0 20px rgba(0, 163, 255, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.3)"
         }}>
           <Sparkles size={24} color="#FFF" />
         </div>
@@ -46,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
             fontSize: "1.25rem",
             fontWeight: 700,
             letterSpacing: "-0.02em",
-            background: "linear-gradient(90deg, #FFFFFF 0%, #00A3FF 100%)",
+            background: "linear-gradient(90deg, #FFFFFF 0%, #38BDF8 50%, #FF65B2 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent"
           }}>
@@ -64,27 +62,30 @@ export const Header: React.FC<HeaderProps> = ({
           display: "flex",
           alignItems: "center",
           gap: "6px",
-          padding: "6px 12px",
+          padding: "6px 14px",
           borderRadius: "20px",
-          background: "rgba(0, 163, 255, 0.08)",
-          border: "1px solid rgba(0, 163, 255, 0.25)",
+          background: "rgba(0, 163, 255, 0.12)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(0, 163, 255, 0.35)",
           fontSize: "0.75rem",
-          color: "#38BDF8"
+          color: "#38BDF8",
+          boxShadow: "0 2px 10px rgba(0, 163, 255, 0.15)"
         }}>
           <ShieldCheck size={14} color="#38BDF8" />
-          <span>Grounded RAG Twin • Anti-Hallucination Active</span>
+          <span>Full Resume RAG Active</span>
         </div>
 
         {/* Audio Mute / Unmute Button */}
         <button
           onClick={onToggleMute}
           title={isMuted ? "Unmute Voice" : "Mute Voice"}
+          className="glass-pill"
           style={{
-            background: isMuted ? "rgba(255, 46, 147, 0.15)" : "rgba(0, 163, 255, 0.12)",
-            border: `1px solid ${isMuted ? "rgba(255, 46, 147, 0.4)" : "rgba(0, 163, 255, 0.3)"}`,
-            color: isMuted ? "#FF2E93" : "#00A3FF",
-            padding: "8px 12px",
-            borderRadius: "8px",
+            background: isMuted ? "rgba(255, 46, 147, 0.2)" : "rgba(0, 163, 255, 0.18)",
+            border: `1px solid ${isMuted ? "rgba(255, 46, 147, 0.5)" : "rgba(0, 163, 255, 0.45)"}`,
+            color: isMuted ? "#FF65B2" : "#38BDF8",
+            padding: "8px 14px",
+            borderRadius: "10px",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
@@ -102,12 +103,11 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           onClick={onOpenAdmin}
           title="Open Knowledge Base Administration"
+          className="glass-pill"
           style={{
-            background: "rgba(255, 255, 255, 0.05)",
-            border: "1px solid var(--border-subtle)",
             color: "#CBD5E1",
             padding: "8px 14px",
-            borderRadius: "8px",
+            borderRadius: "10px",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
@@ -122,9 +122,9 @@ export const Header: React.FC<HeaderProps> = ({
           {health && (
             <span style={{
               fontSize: "0.7rem",
-              background: "rgba(0, 163, 255, 0.2)",
+              background: "rgba(0, 163, 255, 0.25)",
               color: "#38BDF8",
-              padding: "1px 6px",
+              padding: "2px 7px",
               borderRadius: "10px"
             }}>
               {health.vector_store.indexed_documents} docs

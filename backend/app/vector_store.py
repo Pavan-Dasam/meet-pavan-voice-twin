@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import hashlib
 from datetime import datetime
 from pathlib import Path
@@ -214,6 +215,9 @@ class VectorStoreService:
         max_dist = max_distance if max_distance is not None else settings.MAX_COSINE_DISTANCE
         min_sim = min_similarity if min_similarity is not None else settings.MIN_SIMILARITY_SCORE
 
+        # Candidate pool: fetch up to 2.5x candidates for hybrid reranking
+        candidate_count = min(max(k * 2, 8), self.collection.count())
+
         # Encode query
         query_embedding = self.embedding_model.encode(
             [query.strip()],
@@ -223,7 +227,7 @@ class VectorStoreService:
         # Query ChromaDB
         results = self.collection.query(
             query_embeddings=query_embedding,
-            n_results=min(k, self.collection.count()),
+            n_results=candidate_count,
             include=["documents", "metadatas", "distances"]
         )
 
@@ -232,27 +236,39 @@ class VectorStoreService:
         metadatas = results.get("metadatas", [[]])[0]
         distances = results.get("distances", [[]])[0]
 
+        # Extract search terms for lexical keyword bonus
+        query_terms = set(re.findall(r"\w+", query.lower()))
+        # Filter common stopwords from query terms
+        stopwords = {"what", "is", "your", "the", "in", "a", "an", "and", "or", "to", "for", "of", "with", "about", "me", "how", "do", "you", "my"}
+        content_terms = query_terms - stopwords
+
         for doc_text, meta, dist in zip(documents, metadatas, distances):
-            # For cosine space in Chroma, dist is in range [0, 2].
-            # Similarity can be computed as 1.0 - (dist / 2.0) or simply 1.0 - dist
-            similarity = round(max(0.0, 1.0 - dist), 4)
+            dense_similarity = round(max(0.0, 1.0 - dist), 4)
+
+            # Lexical keyword bonus (exact match boost for acronyms, numbers, technologies)
+            doc_lower = doc_text.lower()
+            keyword_matches = sum(1 for term in content_terms if term in doc_lower) if content_terms else 0
+            keyword_boost = min(0.12, keyword_matches * 0.03)
+
+            hybrid_score = round(min(1.0, dense_similarity + keyword_boost), 4)
 
             # Enforce relevance threshold
-            if dist > max_dist or similarity < min_sim:
+            if dist > max_dist or hybrid_score < min_sim:
                 continue
 
             matched_chunks.append({
                 "text": doc_text,
                 "metadata": meta,
                 "distance": round(float(dist), 4),
-                "similarity": similarity,
+                "similarity": hybrid_score,
+                "dense_similarity": dense_similarity,
                 "file_name": meta.get("file_name", "unknown"),
                 "chunk_index": meta.get("chunk_index", 0)
             })
 
-        # Sort by similarity descending
+        # Sort by hybrid similarity descending and return top_k
         matched_chunks.sort(key=lambda x: x["similarity"], reverse=True)
-        return matched_chunks
+        return matched_chunks[:k]
 
     def clear_all(self) -> None:
         """Purge all documents (useful for test resets)."""

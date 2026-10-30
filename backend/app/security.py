@@ -1,5 +1,6 @@
 import re
 import time
+import secrets
 from typing import Dict, List, Optional
 from fastapi import Header, HTTPException, Request, status
 from app.config import settings
@@ -9,14 +10,18 @@ def verify_admin_key(
     x_admin_key: Optional[str] = Header(None, alias="X-Admin-Key"),
     authorization: Optional[str] = Header(None)
 ) -> bool:
-    """Validate admin authorization via X-Admin-Key or Bearer token."""
+    """
+    Validate admin authorization via X-Admin-Key or Bearer token
+    using constant-time comparison to prevent timing attacks.
+    """
     token = None
     if x_admin_key:
         token = x_admin_key.strip()
     elif authorization and authorization.startswith("Bearer "):
         token = authorization.split("Bearer ", 1)[1].strip()
 
-    if not token or token != settings.ADMIN_API_KEY:
+    expected = settings.ADMIN_API_KEY
+    if not token or not expected or not secrets.compare_digest(token, expected):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Unauthorized: Valid admin API key required to access administrative endpoints.",
