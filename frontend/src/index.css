@@ -1,19 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
-  /* Lite Black Theme Canvas */
-  --bg-deep: #0B0F19;
-  --bg-panel: #111827;
-  --bg-glass-card: rgba(17, 24, 39, 0.72);
-  --bg-glass-panel: rgba(15, 23, 42, 0.65);
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glass-glow: rgba(0, 163, 255, 0.35);
-  --cerulean: #00A3FF;
-  --cerulean-glow: rgba(0, 163, 255, 0.4);
-  --rose: #FF2E93;
-  --rose-glow: rgba(255, 46, 147, 0.4);
-  --text-primary: #F8FAFC;
-  --text-muted: #94A3B8;
+  /* Clean White Theme Canvas */
+  --bg-deep: #FAFAFC;
+  --bg-panel: #FFFFFF;
+  --bg-glass-card: #FFFFFF;
+  --bg-glass-panel: #FFFFFF;
+  --border-glass: #E2E8F0;
+  --border-glass-glow: rgba(2, 132, 199, 0.25);
+  --cerulean: #0284C7;
+  --cerulean-glow: rgba(2, 132, 199, 0.25);
+  --rose: #E11D48;
+  --rose-glow: rgba(225, 29, 72, 0.25);
+  --text-primary: #0F172A;
+  --text-muted: #64748B;
   --font-main: 'Poppins', sans-serif;
   --font-mono: 'Space Mono', monospace;
 }
@@ -26,45 +26,45 @@
 
 body {
   font-family: var(--font-main);
-  background-color: var(--bg-deep);
+  background-color: #FAFAFC;
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
   background-image: 
-    radial-gradient(circle at 10% 10%, rgba(0, 163, 255, 0.07) 0%, transparent 40%),
-    radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.06) 0%, transparent 40%),
-    linear-gradient(180deg, #0B0F19 0%, #080C14 100%);
+    radial-gradient(circle at 10% 10%, rgba(2, 132, 199, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(147, 51, 234, 0.03) 0%, transparent 40%),
+    linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%);
   background-attachment: fixed;
 }
 
-/* Glassmorphism Cards & Panels */
+/* Glass & Card Panels */
 .glass-panel {
-  background: var(--bg-glass-panel);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-glass);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .glass-card {
-  background: var(--bg-glass-card);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid var(--border-glass);
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), inset 0 1px 1px 0 rgba(255, 255, 255, 0.08);
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
 }
 
 .glass-pill {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  color: #1E293B;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
 }
 
 .glass-pill:hover {
-  background: rgba(0, 163, 255, 0.12);
-  border-color: rgba(0, 163, 255, 0.4);
-  box-shadow: 0 0 16px rgba(0, 163, 255, 0.3);
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #0284C7;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 /* Animations */
@@ -102,12 +102,12 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(11, 15, 25, 0.5);
+  background: #F8FAFC;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: #CBD5E1;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 163, 255, 0.5);
+  background: #94A3B8;
 }

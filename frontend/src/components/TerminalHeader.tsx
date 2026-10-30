@@ -21,26 +21,26 @@ export const TerminalHeader: React.FC<TerminalHeaderProps> = ({
       alignItems: "center",
       justifyContent: "space-between",
       padding: "12px 18px",
-      borderBottom: "1px solid var(--border-glass)",
-      background: "rgba(255, 255, 255, 0.02)"
+      borderBottom: "1px solid #E2E8F0",
+      background: "#F8FAFC"
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <div style={{
           width: "10px",
           height: "10px",
           borderRadius: "50%",
-          background: isListening ? "#FF2E93" : isSpeaking ? "#00A3FF" : "#10B981",
-          boxShadow: `0 0 10px ${isListening ? "#FF2E93" : isSpeaking ? "#00A3FF" : "#10B981"}`
+          background: isListening ? "#E11D48" : isSpeaking ? "#0284C7" : "#10B981",
+          boxShadow: `0 0 10px ${isListening ? "rgba(225, 29, 72, 0.4)" : isSpeaking ? "rgba(2, 132, 199, 0.4)" : "rgba(16, 185, 129, 0.4)"}`
         }} />
         <div>
-          <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#F8FAFC" }}>
+          <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>
             {isListening
               ? "Listening to your voice..."
               : isSpeaking
               ? "Speaking response as Pavan Dasam..."
               : "Ready for Questions"}
           </div>
-          <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+          <div style={{ fontSize: "0.7rem", color: "#64748B" }}>
             Tap mic to speak or select a prompt
           </div>
         </div>
@@ -56,7 +56,7 @@ export const TerminalHeader: React.FC<TerminalHeaderProps> = ({
                 style={{
                   width: "3px",
                   height: `${h}px`,
-                  background: "#00A3FF",
+                  background: "#0284C7",
                   borderRadius: "2px",
                   animation: `soundWave 0.7s infinite ease-in-out ${i * 0.1}s`
                 }}
@@ -76,9 +76,9 @@ export const TerminalHeader: React.FC<TerminalHeaderProps> = ({
               gap: "5px",
               padding: "5px 10px",
               borderRadius: "6px",
-              background: "rgba(239, 68, 68, 0.15)",
-              border: "1px solid rgba(239, 68, 68, 0.4)",
-              color: "#FCA5A5",
+              background: "#FEE2E2",
+              border: "1px solid #FCA5A5",
+              color: "#DC2626",
               fontSize: "0.74rem",
               fontWeight: 600,
               cursor: "pointer"
@@ -100,9 +100,9 @@ export const TerminalHeader: React.FC<TerminalHeaderProps> = ({
             width: "30px",
             height: "30px",
             borderRadius: "6px",
-            background: "rgba(255, 255, 255, 0.04)",
-            border: "1px solid var(--border-glass)",
-            color: "var(--text-muted)",
+            background: "#F1F5F9",
+            border: "1px solid #E2E8F0",
+            color: "#64748B",
             cursor: "pointer"
           }}
         >

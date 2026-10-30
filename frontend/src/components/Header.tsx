@@ -1,5 +1,5 @@
 import React from "react";
-import { Download, Sliders } from "lucide-react";
+import { Download } from "lucide-react";
 import type { HealthStatus } from "../types";
 
 // GitHub Brand Icon
@@ -37,16 +37,13 @@ const LinkedinIcon: React.FC<{ size?: number }> = ({ size = 15 }) => (
 );
 
 interface HeaderProps {
-  health: HealthStatus | null;
-  onOpenAdmin: () => void;
-  isMuted: boolean;
-  onToggleMute: () => void;
+  health?: HealthStatus | null;
+  onOpenAdmin?: () => void;
+  isMuted?: boolean;
+  onToggleMute?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  health,
-  onOpenAdmin
-}) => {
+export const Header: React.FC<HeaderProps> = () => {
   return (
     <header className="glass-panel" style={{
       display: "flex",
@@ -56,7 +53,8 @@ export const Header: React.FC<HeaderProps> = ({
       borderBottom: "1px solid var(--border-glass)",
       position: "sticky",
       top: 0,
-      zIndex: 40
+      zIndex: 40,
+      background: "#FFFFFF"
     }}>
       {/* Brand & Identity */}
       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -64,30 +62,30 @@ export const Header: React.FC<HeaderProps> = ({
           width: "38px",
           height: "38px",
           borderRadius: "10px",
-          background: "linear-gradient(135deg, #00A3FF 0%, #A855F7 100%)",
+          background: "linear-gradient(135deg, #0284C7 0%, #7C3AED 100%)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 0 16px rgba(0, 163, 255, 0.4)"
+          boxShadow: "0 4px 12px rgba(2, 132, 199, 0.25)"
         }}>
-          <span style={{ fontSize: "1.1rem", fontWeight: 800, color: "#FFF" }}>P</span>
+          <span style={{ fontSize: "1.1rem", fontWeight: 800, color: "#FFFFFF" }}>P</span>
         </div>
         <div>
           <h1 style={{
             fontSize: "1.15rem",
             fontWeight: 700,
             letterSpacing: "-0.01em",
-            color: "#F8FAFC"
+            color: "#0F172A"
           }}>
-            Meet Pavan <span style={{ color: "#00A3FF" }}>— AI Voice Twin</span>
+            Meet Pavan <span style={{ color: "#0284C7" }}>— AI Voice Twin</span>
           </h1>
-          <p style={{ fontSize: "0.74rem", color: "var(--text-muted)" }}>
+          <p style={{ fontSize: "0.74rem", color: "#64748B" }}>
             RAG-powered conversational twin for 100x AI Agent Team evaluation
           </p>
         </div>
       </div>
 
-      {/* Action Buttons: Resume, GitHub, LinkedIn, Admin */}
+      {/* Action Buttons: Resume Download, GitHub, LinkedIn */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         {/* Download Resume Button */}
         <a
@@ -99,14 +97,14 @@ export const Header: React.FC<HeaderProps> = ({
             display: "flex",
             alignItems: "center",
             gap: "7px",
-            padding: "8px 14px",
+            padding: "8px 15px",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: 600,
-            color: "#38BDF8",
+            color: "#0284C7",
             textDecoration: "none",
-            background: "rgba(0, 163, 255, 0.15)",
-            border: "1px solid rgba(0, 163, 255, 0.35)",
+            background: "#F0F9FF",
+            border: "1px solid #BAE6FD",
             transition: "all 0.2s"
           }}
         >
@@ -125,12 +123,14 @@ export const Header: React.FC<HeaderProps> = ({
             display: "flex",
             alignItems: "center",
             gap: "7px",
-            padding: "8px 14px",
+            padding: "8px 15px",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: 500,
-            color: "#F8FAFC",
+            color: "#1E293B",
             textDecoration: "none",
+            background: "#F8FAFC",
+            border: "1px solid #E2E8F0",
             transition: "all 0.2s"
           }}
         >
@@ -149,50 +149,20 @@ export const Header: React.FC<HeaderProps> = ({
             display: "flex",
             alignItems: "center",
             gap: "7px",
-            padding: "8px 14px",
+            padding: "8px 15px",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: 500,
-            color: "#38BDF8",
+            color: "#0284C7",
             textDecoration: "none",
+            background: "#F0F9FF",
+            border: "1px solid #BAE6FD",
             transition: "all 0.2s"
           }}
         >
           <LinkedinIcon size={15} />
           <span>LinkedIn</span>
         </a>
-
-        {/* Admin Portal Toggle */}
-        <button
-          onClick={onOpenAdmin}
-          title="Knowledge Base Admin Portal"
-          className="glass-pill"
-          style={{
-            color: "var(--text-muted)",
-            padding: "8px 12px",
-            borderRadius: "10px",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            fontSize: "0.78rem",
-            fontWeight: 500,
-            transition: "all 0.2s"
-          }}
-        >
-          <Sliders size={14} />
-          {health && (
-            <span style={{
-              fontSize: "0.68rem",
-              background: "rgba(0, 163, 255, 0.2)",
-              color: "#38BDF8",
-              padding: "1px 6px",
-              borderRadius: "8px"
-            }}>
-              {health.vector_store.indexed_documents}
-            </span>
-          )}
-        </button>
       </div>
     </header>
   );
