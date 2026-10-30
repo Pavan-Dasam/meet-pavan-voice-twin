@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Header } from "./components/Header";
-import { VoiceVisualizer } from "./components/VoiceVisualizer";
+import { CandidateCard } from "./components/CandidateCard";
 import { AssessmentChips } from "./components/AssessmentChips";
+import { TerminalHeader } from "./components/TerminalHeader";
 import { ChatInterface } from "./components/ChatInterface";
 import { InputBar } from "./components/InputBar";
 import { AdminModal } from "./components/AdminModal";
@@ -52,18 +53,17 @@ export const App: React.FC = () => {
     }
   }, [isListening, isSpeaking, stop]);
 
-  // Load Health on Mount
+  // Load Health & Initial Welcome on Mount
   useEffect(() => {
     fetchHealth()
       .then(setHealth)
       .catch((e) => console.warn("Backend not yet connected:", e));
 
-    // Initial Welcome Message
     const welcomeMsg: ChatMessage = {
       id: "msg_welcome",
       role: "assistant",
       content:
-        "Hello! I am Pavan Dasam's official AI Voice Twin. I'm an AI Engineer with over 3.5 years of experience in Generative AI, LangGraph multi-agent systems, and production RAG architectures across Financial and Health Insurance. Feel free to speak or type any question, or select one of the interview assessment topics below!",
+        "Hello! I am Pavan Dasam's automated Voice Twin built for the 100x AI Agent Team interview. You can test me using the 1-click prompts on the left, click the microphone below to ask any questions in your own voice, or type in the box.",
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       hasRetrievedEvidence: true
     };
@@ -88,7 +88,6 @@ export const App: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Build history for RAG service (last 6 turns)
       const historyPayload = messages.slice(-6).map((m) => ({
         role: m.role,
         content: m.content
@@ -119,7 +118,7 @@ export const App: React.FC = () => {
       const errorMsg: ChatMessage = {
         id: `err_${Date.now()}`,
         role: "assistant",
-        content: `Error: ${err.message || "Failed to reach Pavan's AI Twin service. Please check your backend connection."}`,
+        content: `Error: ${err.message || "Failed to reach AI Twin service."}`,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         hasRetrievedEvidence: false
       };
@@ -136,81 +135,104 @@ export const App: React.FC = () => {
     });
   };
 
-  const handleToggleMute = () => {
-    if (!isMuted) {
-      stop();
-      setIsMuted(true);
-    } else {
-      setIsMuted(false);
-    }
+  const handleResetConversation = () => {
+    stop();
+    setMessages([
+      {
+        id: `msg_welcome_${Date.now()}`,
+        role: "assistant",
+        content:
+          "Hello! I am Pavan Dasam's automated Voice Twin built for the 100x AI Agent Team interview. You can test me using the 1-click prompts on the left, click the microphone below to ask any questions in your own voice, or type in the box.",
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        hasRetrievedEvidence: true
+      }
+    ]);
   };
 
   return (
     <div style={{
       display: "flex",
       flexDirection: "column",
-      height: "100vh",
-      maxHeight: "100vh",
+      minHeight: "100vh",
       background: "var(--bg-deep)"
     }}>
-      {/* Top Navigation */}
+      {/* Top Header with Resume Download, GitHub, and LinkedIn links */}
       <Header
         health={health}
         onOpenAdmin={() => setIsAdminOpen(true)}
         isMuted={isMuted}
-        onToggleMute={handleToggleMute}
+        onToggleMute={() => setIsMuted(!isMuted)}
       />
 
-      {/* Center Interactive Area */}
+      {/* Main Split-Pane Container (Reference Image 3) */}
       <main style={{
         flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        maxWidth: "960px",
+        maxWidth: "1400px",
         width: "100%",
         margin: "0 auto",
-        overflow: "hidden"
+        padding: "20px 24px",
+        display: "grid",
+        gridTemplateColumns: "380px 1fr",
+        gap: "24px",
+        height: "calc(100vh - 72px)",
+        boxSizing: "border-box"
       }}>
-        {/* Voice Animation Visualizer */}
-        <VoiceVisualizer
-          isListening={isListening}
-          isSpeaking={isSpeaking}
-          isPaused={isPaused}
-        />
+        {/* Left Column: Candidate Info & Collapsible 100x Prompts */}
+        <aside style={{
+          display: "flex",
+          flexDirection: "column",
+          overflowY: "auto",
+          paddingRight: "4px"
+        }}>
+          <CandidateCard />
+          <AssessmentChips
+            onSelectQuestion={handleSendMessage}
+            disabled={isLoading}
+          />
+        </aside>
 
-        {/* 1-Click Assessment Questions Pills */}
-        <AssessmentChips
-          onSelectQuestion={handleSendMessage}
-          disabled={isLoading}
-        />
+        {/* Right Column: Terminal Header, Chat Feed & Input */}
+        <section className="glass-card" style={{
+          display: "flex",
+          flexDirection: "column",
+          borderRadius: "16px",
+          overflow: "hidden",
+          height: "100%"
+        }}>
+          <TerminalHeader
+            isListening={isListening}
+            isSpeaking={isSpeaking}
+            isPaused={isPaused}
+            onInterrupt={stop}
+            onReset={handleResetConversation}
+          />
 
-        {/* Chat Feed */}
-        <ChatInterface
-          messages={messages}
-          isLoading={isLoading}
-          activeSpeechId={activeSpeechId}
-          isSpeaking={isSpeaking}
-          isPaused={isPaused}
-          onPlaySpeech={handlePlaySpeech}
-          onPauseSpeech={pause}
-          onResumeSpeech={resume}
-          onStopSpeech={stop}
-        />
+          <ChatInterface
+            messages={messages}
+            isLoading={isLoading}
+            activeSpeechId={activeSpeechId}
+            isSpeaking={isSpeaking}
+            isPaused={isPaused}
+            onPlaySpeech={handlePlaySpeech}
+            onPauseSpeech={pause}
+            onResumeSpeech={resume}
+            onStopSpeech={stop}
+          />
 
-        {/* Bottom Input Controls (Voice & Text) */}
-        <InputBar
-          onSendMessage={handleSendMessage}
-          isLoading={isLoading}
-          isListening={isListening}
-          transcript={transcript}
-          isSpeechSupported={isSpeechSupported}
-          onStartListening={startListening}
-          onStopListening={stopListening}
-          speechError={speechError}
-        />
+          <InputBar
+            onSendMessage={handleSendMessage}
+            isLoading={isLoading}
+            isListening={isListening}
+            transcript={transcript}
+            isSpeechSupported={isSpeechSupported}
+            onStartListening={startListening}
+            onStopListening={stopListening}
+            speechError={speechError}
+          />
+        </section>
       </main>
 
-      {/* Protected Admin Modal */}
+      {/* Admin Modal */}
       <AdminModal
         isOpen={isAdminOpen}
         onClose={() => setIsAdminOpen(false)}

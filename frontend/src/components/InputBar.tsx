@@ -41,25 +41,26 @@ export const InputBar: React.FC<InputBarProps> = ({
   };
 
   return (
-    <div className="glass-panel" style={{
-      padding: "16px 24px",
+    <div style={{
+      padding: "16px 20px",
       borderTop: "1px solid var(--border-glass)",
-      position: "relative"
+      position: "relative",
+      background: "rgba(17, 24, 39, 0.4)"
     }}>
       {/* Live Speech Recognition Transcript Overlay */}
       {isListening && transcript && (
         <div style={{
           position: "absolute",
-          top: "-46px",
-          left: "24px",
-          right: "24px",
+          top: "-44px",
+          left: "20px",
+          right: "20px",
           background: "rgba(255, 46, 147, 0.2)",
           backdropFilter: "blur(14px)",
           WebkitBackdropFilter: "blur(14px)",
           border: "1px solid rgba(255, 46, 147, 0.5)",
-          borderRadius: "10px",
-          padding: "8px 16px",
-          fontSize: "0.82rem",
+          borderRadius: "8px",
+          padding: "7px 14px",
+          fontSize: "0.8rem",
           color: "#FFF",
           display: "flex",
           alignItems: "center",
@@ -113,27 +114,26 @@ export const InputBar: React.FC<InputBarProps> = ({
               : "Ask question by voice"
           }
           style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "14px",
+            width: "46px",
+            height: "46px",
+            borderRadius: "12px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             cursor: !isSpeechSupported || isLoading ? "not-allowed" : "pointer",
             background: isListening
               ? "linear-gradient(135deg, #FF2E93, #E11D48)"
-              : "rgba(0, 163, 255, 0.16)",
-            backdropFilter: "blur(12px)",
-            border: `1px solid ${isListening ? "#FF2E93" : "rgba(0, 163, 255, 0.4)"}`,
-            color: isListening ? "#FFF" : "#38BDF8",
+              : "linear-gradient(135deg, #00A3FF, #0284C7)",
+            border: "none",
+            color: "#FFF",
             transition: "all 0.25s ease",
             boxShadow: isListening
               ? "0 0 25px rgba(255, 46, 147, 0.6)"
-              : "0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15)",
+              : "0 0 16px rgba(0, 163, 255, 0.4)",
             flexShrink: 0
           }}
         >
-          {isListening ? <MicOff size={22} /> : <Mic size={22} />}
+          {isListening ? <MicOff size={20} /> : <Mic size={20} />}
         </button>
 
         {/* Text Input Fallback */}
@@ -142,33 +142,24 @@ export const InputBar: React.FC<InputBarProps> = ({
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder={
-              isSpeechSupported
-                ? "Ask anything about my resume, projects, tech stack, or click a topic above..."
-                : "Ask anything about my resume, projects, or experience..."
-            }
+            placeholder="Ask Pavan anything, or click the mic to speak..."
             disabled={isLoading}
             style={{
               width: "100%",
-              padding: "13px 18px",
-              background: "rgba(15, 23, 42, 0.55)",
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
+              padding: "12px 18px",
+              background: "rgba(11, 15, 25, 0.8)",
               border: "1px solid var(--border-glass)",
-              borderRadius: "14px",
+              borderRadius: "12px",
               color: "#F8FAFC",
-              fontSize: "0.92rem",
+              fontSize: "0.88rem",
               outline: "none",
-              boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.3)",
-              transition: "all 0.25s ease"
+              transition: "all 0.2s ease"
             }}
             onFocus={(e) => {
               e.target.style.borderColor = "#00A3FF";
-              e.target.style.boxShadow = "0 0 16px rgba(0, 163, 255, 0.35), inset 0 2px 4px rgba(0, 0, 0, 0.3)";
             }}
             onBlur={(e) => {
               e.target.style.borderColor = "var(--border-glass)";
-              e.target.style.boxShadow = "inset 0 2px 4px rgba(0, 0, 0, 0.3)";
             }}
           />
         </div>
@@ -178,26 +169,41 @@ export const InputBar: React.FC<InputBarProps> = ({
           type="submit"
           disabled={!inputText.trim() || isLoading}
           style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "14px",
+            width: "46px",
+            height: "46px",
+            borderRadius: "12px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             background: !inputText.trim() || isLoading
-              ? "rgba(255, 255, 255, 0.05)"
-              : "linear-gradient(135deg, #00A3FF, #0284C7)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            color: !inputText.trim() || isLoading ? "#64748B" : "#FFF",
+              ? "rgba(255, 255, 255, 0.04)"
+              : "rgba(0, 163, 255, 0.15)",
+            border: `1px solid ${!inputText.trim() || isLoading ? "var(--border-glass)" : "rgba(0, 163, 255, 0.4)"}`,
+            color: !inputText.trim() || isLoading ? "#475569" : "#38BDF8",
             cursor: !inputText.trim() || isLoading ? "not-allowed" : "pointer",
-            transition: "all 0.25s ease",
-            boxShadow: !inputText.trim() || isLoading ? "none" : "0 0 20px rgba(0, 163, 255, 0.5)",
+            transition: "all 0.2s ease",
             flexShrink: 0
           }}
         >
-          <Send size={18} />
+          <Send size={16} />
         </button>
       </form>
+
+      <div style={{
+        marginTop: "8px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        fontSize: "0.7rem",
+        color: "var(--text-muted)",
+        padding: "0 4px"
+      }}>
+        <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10B981" }} />
+          Zero API key setup • Web Speech API Powered
+        </span>
+        <span>100x.inc Candidate Evaluation</span>
+      </div>
     </div>
   );
 };

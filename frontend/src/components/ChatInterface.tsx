@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Play, Pause, Square, FileText, User, Bot } from "lucide-react";
+import { Play, Pause, Square, FileText, Bot, Volume2 } from "lucide-react";
 import type { ChatMessage } from "../types";
 
 interface ChatInterfaceProps {
@@ -40,39 +40,6 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       flexDirection: "column",
       gap: "18px"
     }}>
-      {messages.length === 0 && (
-        <div style={{
-          margin: "auto",
-          textAlign: "center",
-          maxWidth: "460px",
-          padding: "30px",
-          borderRadius: "16px",
-          background: "rgba(10, 14, 26, 0.6)",
-          border: "1px dashed rgba(148, 163, 184, 0.2)"
-        }}>
-          <div style={{
-            width: "56px",
-            height: "56px",
-            margin: "0 auto 16px auto",
-            borderRadius: "50%",
-            background: "rgba(0, 163, 255, 0.1)",
-            border: "1px solid rgba(0, 163, 255, 0.3)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          }}>
-            <Bot size={30} color="#00A3FF" />
-          </div>
-          <h2 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "8px" }}>
-            Welcome! I'm Pavan Dasam's AI Voice Twin.
-          </h2>
-          <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", lineHeight: 1.6 }}>
-            Ask me anything about my 3.5+ years of enterprise AI engineering, LangGraph multi-agent systems,
-            Model Context Protocol (MCP) integrations, or click any of the prompt pills below.
-          </p>
-        </div>
-      )}
-
       {messages.map((msg) => {
         const isUser = msg.role === "user";
         const isCurrentSpeech = activeSpeechId === msg.id && isSpeaking;
@@ -96,33 +63,34 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
-                marginTop: "4px"
+                marginTop: "2px",
+                boxShadow: "0 4px 12px rgba(0, 163, 255, 0.3)"
               }}>
-                <Bot size={20} color="#FFF" />
+                <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#FFF" }}>PD</span>
               </div>
             )}
 
-          <div style={{
-            maxWidth: "76%",
-            borderRadius: "16px",
-            padding: "16px 20px",
-            background: isUser
-              ? "linear-gradient(135deg, rgba(0, 163, 255, 0.35), rgba(168, 85, 247, 0.25))"
-              : "rgba(15, 23, 42, 0.65)",
-            backdropFilter: "blur(16px) saturate(160%)",
-            WebkitBackdropFilter: "blur(16px) saturate(160%)",
-            border: `1px solid ${
-              isUser
-                ? "rgba(0, 163, 255, 0.45)"
-                : isCurrentSpeech
-                ? "rgba(0, 163, 255, 0.85)"
-                : "rgba(255, 255, 255, 0.12)"
-            }`,
-            boxShadow: isCurrentSpeech
-              ? "0 0 25px rgba(0, 163, 255, 0.4), 0 8px 32px rgba(0, 0, 0, 0.4)"
-              : "0 8px 32px 0 rgba(0, 0, 0, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1)",
-            transition: "all 0.25s ease"
-          }}>
+            <div style={{
+              maxWidth: "80%",
+              borderRadius: "14px",
+              padding: "16px 20px",
+              background: isUser
+                ? "linear-gradient(135deg, rgba(0, 163, 255, 0.28), rgba(2, 132, 199, 0.4))"
+                : "rgba(17, 24, 39, 0.8)",
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
+              border: `1px solid ${
+                isUser
+                  ? "rgba(0, 163, 255, 0.45)"
+                  : isCurrentSpeech
+                  ? "rgba(0, 163, 255, 0.8)"
+                  : "rgba(255, 255, 255, 0.08)"
+              }`,
+              boxShadow: isCurrentSpeech
+                ? "0 0 20px rgba(0, 163, 255, 0.35)"
+                : "0 4px 20px rgba(0, 0, 0, 0.25)",
+              transition: "all 0.2s"
+            }}>
               <div style={{
                 display: "flex",
                 alignItems: "center",
@@ -133,9 +101,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 <span style={{
                   fontSize: "0.75rem",
                   fontWeight: 600,
-                  color: isUser ? "#38BDF8" : "#A78BFA"
+                  color: isUser ? "#38BDF8" : "#94A3B8"
                 }}>
-                  {isUser ? "You (Recruiter)" : "Pavan Dasam (AI Twin)"}
+                  {isUser ? "You (Recruiter)" : "Pavan Dasam • Candidate AI Voice Twin"}
                 </span>
                 <span style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
                   {msg.timestamp}
@@ -151,12 +119,12 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 {msg.content}
               </div>
 
-              {/* Speech Controls for Assistant Messages */}
+              {/* Spoken Audio Controls & Grounding Badges */}
               {!isUser && (
                 <div style={{
                   marginTop: "12px",
-                  paddingTop: "8px",
-                  borderTop: "1px solid rgba(148, 163, 184, 0.1)",
+                  paddingTop: "10px",
+                  borderTop: "1px solid rgba(255, 255, 255, 0.06)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
@@ -179,10 +147,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                               display: "flex",
                               alignItems: "center",
                               gap: "4px",
-                              fontSize: "0.75rem"
+                              fontSize: "0.74rem"
                             }}
                           >
-                            <Play size={13} /> Resume
+                            <Play size={12} /> Resume
                           </button>
                         ) : (
                           <button
@@ -197,17 +165,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                               display: "flex",
                               alignItems: "center",
                               gap: "4px",
-                              fontSize: "0.75rem"
+                              fontSize: "0.74rem"
                             }}
                           >
-                            <Pause size={13} /> Pause
+                            <Pause size={12} /> Pause
                           </button>
                         )}
                         <button
                           onClick={onStopSpeech}
                           style={{
-                            background: "rgba(255, 255, 255, 0.08)",
-                            border: "1px solid var(--border-subtle)",
+                            background: "rgba(255, 255, 255, 0.06)",
+                            border: "1px solid var(--border-glass)",
                             color: "#CBD5E1",
                             padding: "4px 8px",
                             borderRadius: "6px",
@@ -215,10 +183,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                             display: "flex",
                             alignItems: "center",
                             gap: "4px",
-                            fontSize: "0.75rem"
+                            fontSize: "0.74rem"
                           }}
                         >
-                          <Square size={12} /> Stop
+                          <Square size={11} /> Stop
                         </button>
                       </>
                     ) : (
@@ -234,11 +202,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                           display: "flex",
                           alignItems: "center",
                           gap: "5px",
-                          fontSize: "0.75rem",
+                          fontSize: "0.74rem",
                           fontWeight: 500
                         }}
                       >
-                        <Play size={13} /> Listen to Voice
+                        <Volume2 size={13} /> Listen aloud
                       </button>
                     )}
                   </div>
@@ -246,7 +214,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   {/* Grounding Source Citation Badges */}
                   {msg.sources && msg.sources.length > 0 && (
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
-                      <span style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>Grounded in:</span>
+                      <span style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Grounded in:</span>
                       {msg.sources.map((src, i) => (
                         <span
                           key={i}
@@ -263,7 +231,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                             gap: "3px"
                           }}
                         >
-                          <FileText size={11} />
+                          <FileText size={10} />
                           {src.file_name.length > 20
                             ? src.file_name.substring(0, 18) + "..."
                             : src.file_name}
@@ -288,9 +256,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
-                marginTop: "4px"
+                marginTop: "2px",
+                boxShadow: "0 4px 12px rgba(255, 46, 147, 0.3)"
               }}>
-                <User size={20} color="#FFF" />
+                <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#FFF" }}>You</span>
               </div>
             )}
           </div>
@@ -313,8 +282,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <div style={{
             padding: "12px 18px",
             borderRadius: "14px",
-            background: "rgba(10, 14, 26, 0.8)",
-            border: "1px solid var(--border-subtle)",
+            background: "rgba(17, 24, 39, 0.8)",
+            border: "1px solid var(--border-glass)",
             display: "flex",
             alignItems: "center",
             gap: "8px",
@@ -329,7 +298,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               borderRadius: "50%",
               animation: "spin 1s linear infinite"
             }} />
-            <span>Searching vector database & synthesizing answer via Claude...</span>
+            <span>Searching vector database & synthesizing grounded answer...</span>
           </div>
         </div>
       )}
