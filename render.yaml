@@ -3,7 +3,8 @@ services:
     name: meet-pavan-voice-twin
     env: docker
     dockerfilePath: Dockerfile
-    plan: standard
+    plan: free
+    region: oregon
     envVars:
       - key: ANTHROPIC_API_KEY
         sync: false
@@ -23,7 +24,3 @@ services:
         value: "0.15"
       - key: MAX_COSINE_DISTANCE
         value: "0.85"
-    disk:
-      name: pavan-rag-data
-      mountPath: /app/backend/data
-      sizeGB: 1
